@@ -79,3 +79,4 @@ def analyze_job_endpoint(job: JobInput):
     return analyze_job(
         job.description
     )
+# for github desktop
