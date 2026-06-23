@@ -1,0 +1,48 @@
+services:
+
+  postgres:
+    image: postgres:17
+
+    container_name: jobops-postgres
+
+    environment:
+      POSTGRES_DB: jobops
+      POSTGRES_USER: jobops
+      POSTGRES_PASSWORD: jobops
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ../backend
+
+    container_name: jobops-backend
+
+    volumes:
+      - ../backend/app:/app/app
+      - ./storage:/app/storage
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: ../frontend
+
+    container_name: jobops-frontend
+
+    ports:
+      - "8501:8501"
+
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
